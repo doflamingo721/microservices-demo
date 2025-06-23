@@ -111,9 +111,9 @@ spec:
         - name: FRONTEND_ADDR
           value: "{{ .Values.frontend.name }}:80"
         - name: USERS
-          value: "10"
+          value: "20"
         - name: RATE
-          value: "1"
+          value: "5"
         resources:
           {{- toYaml .Values.loadGenerator.resources | nindent 10 }}
 {{- if .Values.networkPolicies.create }}
