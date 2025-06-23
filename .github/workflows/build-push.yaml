@@ -33,6 +33,7 @@ jobs:
           file: ./src/frontend/Dockerfile
           push: false
           tags: frontend:temp
+          load: true
 
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@0.28.0
