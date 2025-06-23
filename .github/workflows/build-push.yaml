@@ -1,0 +1,49 @@
+name: Build, Scan, and Push Frontend Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-scan-push:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: demo/src/frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image (local only)
+        uses: docker/build-push-action@v5
+        with:
+          context: demo/src/frontend
+          file: demo/src/frontend/Dockerfile
+          push: false
+          tags: frontend:temp
+
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@v0.16.1
+        with:
+          image-ref: frontend:temp
+          format: table
+          exit-code: 0
+          ignore-unfixed: true
+
+      - name: Tag image for DockerHub
+        run: docker tag frontend:temp doflamingo721/frontend:latest
+
+      - name: Push image to DockerHub
+        run: docker push doflamingo721/frontend:latest
