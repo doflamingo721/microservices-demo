@@ -29,8 +29,8 @@ jobs:
       - name: Build Docker image (local only)
         uses: docker/build-push-action@v5
         with:
-          context: demo/src/frontend
-          file: demo/src/frontend/Dockerfile
+          context: ./src/frontend
+          file: ./src/frontend/Dockerfile
           push: false
           tags: frontend:temp
 
