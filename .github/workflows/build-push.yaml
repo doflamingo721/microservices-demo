@@ -35,7 +35,7 @@ jobs:
           tags: frontend:temp
 
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@v0.16.1
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: frontend:temp
           format: table
